@@ -1,8 +1,4 @@
 import express, { Request, Response, NextFunction } from "express";
-import { 
-    createTask, 
-    getTasks
-} from "../controllers/taskController";
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -10,8 +6,15 @@ const router = express.Router();
 
 // Rotas
 router.get(
-    "/", 
-    getTasks
+    "/", async (req, res) => {
+        try {
+          const tasks = await prisma.task.findMany();
+          res.status(200).json(tasks);
+        } catch (error) {
+          console.error('Error fetching tasks:', error);
+          res.status(500).json({ message: 'Error fetching tasks' });
+        }
+      }
 );
 
 router.post("/", async (req, res) => {
@@ -26,6 +29,5 @@ router.post("/", async (req, res) => {
       res.status(500).json({ message: "Internal Server Error" });
     }
   });
-  
 
 export default router;
