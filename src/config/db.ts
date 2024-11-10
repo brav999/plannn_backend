@@ -3,13 +3,11 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const mongoUri = process.env.MONGO_URI;
+const mongoUri = process.env['MONGO_URI'] as string;
 
 const connectDB = async () => {
   try {
     await mongoose.connect(mongoUri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       // Add other necessary options here, such as authSource, retryWrites, etc.
     });
 

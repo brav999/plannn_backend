@@ -8,32 +8,7 @@
 
 Este é um projeto de API para gerenciamento de tarefas, desenvolvido utilizando Node.js, Express e MongoDB. A API permite a criação, leitura, atualização e exclusão (CRUD) de tarefas. O projeto segue uma arquitetura organizada em controladores, rotas, modelos e serviços.
 
-## Estrutura do Projeto
-
-```
-src/
-│
-├── config/
-│ └── db.js # Configuração da conexão com o banco de dados MongoDB
-│
-├── controllers/
-│ └── taskController.js # Controladores para gerenciar as operações de tarefas
-│
-├── middleware/
-│ └── authMiddleware.js # Middleware para autenticação (a ser implementado)
-│
-├── models/
-│ └── taskModel.js # Definição do modelo de dados das tarefas
-│
-├── routes/
-│ └── taskRoutes.js # Definição das rotas para as operações de tarefas
-│
-├── services/
-│ └── taskServices.js # Lógica de negócios para gerenciamento de tarefas (a ser implementado)
-│
-├── app.js # Configuração da aplicação Express
-└── server.js # Inicialização do servidor e conexão com o banco de dados
-```
+[![Made with Prisma](http://made-with.prisma.io/indigo.svg)](https://prisma.io)
 
 ## Funcionalidades
 

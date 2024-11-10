@@ -6,24 +6,10 @@ import {
     updateTask, 
     deleteTask 
 } from "../controllers/taskController";
-import authMiddleware from '../middleware/authMiddleware';
+import { PrismaClient } from '@prisma/client';
 
+const prisma = new PrismaClient();
 const router = express.Router();
-router.use(authMiddleware);
-
-// Define tipos mais específicos para o middleware
-interface AuthenticatedRequest extends Request {
-    user?: {
-        id: string;
-        // outros campos do usuário se necessário
-    };
-}
-
-type AuthMiddleware = (
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction
-) => Promise<void> | void;
 
 // Rotas
 router.get(
@@ -32,12 +18,13 @@ router.get(
 );
 
 router.post(
-    "/",
-    [
-        check("title", "Title is required").not().isEmpty(),
-        check("description", "Description is required").not().isEmpty()
-    ],
-    createTask
+    "/task", async (req, res) => {
+        const{title, description, status} = req.body;
+        const task = await prisma.task.createTask({
+            data: {title, description, status},
+        })
+        res.json(task)
+    }
 );
 
 router.put(
