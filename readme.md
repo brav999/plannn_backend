@@ -21,9 +21,9 @@ Este é um projeto de API para gerenciamento de tarefas, desenvolvido utilizando
 
 ## Pré-requisitos
 
-- Node.js v12 ou superior
+- Node.js v20 ou superior
 - MongoDB
-- NPM ou Yarn
+- NPM
 
 ## Instalação
 
@@ -39,13 +39,7 @@ Este é um projeto de API para gerenciamento de tarefas, desenvolvido utilizando
    ```bash
    npm install
    ```
-
-   ou
-
-   ```bash
-   yarn install
-   ```
-
+   
 3. Configure as variáveis de ambiente:
 
    Crie um arquivo `.env` na raiz do projeto e adicione as seguintes variáveis:
