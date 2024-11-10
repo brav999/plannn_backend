@@ -1,10 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
-import { check } from "express-validator";
 import { 
     createTask, 
-    getTasks, 
-    updateTask, 
-    deleteTask 
+    getTasks
 } from "../controllers/taskController";
 import { PrismaClient } from '@prisma/client';
 
@@ -17,33 +14,18 @@ router.get(
     getTasks
 );
 
-router.post(
-    "/task", async (req, res) => {
-        const{title, description, status} = req.body;
-        const task = await prisma.task.createTask({
-            data: {title, description, status},
-        })
-        res.json(task)
+router.post("/", async (req, res) => {
+    try {
+      const { title, description, status } = req.body;
+      const task = await prisma.task.create({
+        data: { title, description, status },
+      });
+      res.status(201).json(task);
+    } catch (error) {
+      console.error("Error creating task:", error);
+      res.status(500).json({ message: "Internal Server Error" });
     }
-);
-
-router.put(
-    "/:id",
-    [
-        check("id", "Invalid task ID").isMongoId(),
-        check("title", "Title is required").optional().not().isEmpty(),
-        check("description", "Description is required").optional().not().isEmpty(),
-        check("status", "Status must be valid").optional().isIn(['pending', 'in_progress', 'completed'])
-    ],
-    updateTask
-);
-
-router.delete(
-    "/:id",
-    [
-        check("id", "Invalid task ID").isMongoId()
-    ],
-    deleteTask
-);
+  });
+  
 
 export default router;

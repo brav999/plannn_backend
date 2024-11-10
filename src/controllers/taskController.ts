@@ -1,18 +1,10 @@
+// src/controllers/taskController.ts
 import { Request, Response } from 'express';
-import Task from '../models/taskModel';
-
-// Interface para o modelo de Task
-interface ITask {
-  title: string;
-  description: string;
-  status: 'pending' | 'in_progress' | 'completed';
-  createdAt?: Date;
-  updatedAt?: Date;
-}
+import prisma from '../config/db';
 
 export const getTasks = async (req: Request, res: Response): Promise<void> => {
   try {
-    const tasks = await Task.find();
+    const tasks = await prisma.task.findMany();
     res.json(tasks);
   } catch (error) {
     console.error('Error fetching tasks:', error);
@@ -22,52 +14,13 @@ export const getTasks = async (req: Request, res: Response): Promise<void> => {
 
 export const createTask = async (req: Request, res: Response): Promise<void> => {
   try {
-    const taskData: ITask = req.body;
-    const newTask = new Task(taskData);
-    const savedTask = await newTask.save();
-    res.status(201).json(savedTask);
+    const { title, description, status } = req.body;
+    const newTask = await prisma.task.create({
+      data: { title, description, status },
+    });
+    res.status(201).json(newTask);
   } catch (error) {
     console.error('Error creating task:', error);
     res.status(400).json({ message: 'Error creating task' });
-  }
-};
-
-export const updateTask = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const taskId = req.params.id;
-    const updateData: Partial<ITask> = req.body;
-    
-    const updatedTask = await Task.findByIdAndUpdate(
-      taskId,
-      updateData,
-      { new: true, runValidators: true }
-    );
-
-    if (!updatedTask) {
-      res.status(404).json({ message: 'Task not found' });
-      return;
-    }
-
-    res.json(updatedTask);
-  } catch (error) {
-    console.error('Error updating task:', error);
-    res.status(400).json({ message: 'Error updating task' });
-  }
-};
-
-export const deleteTask = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const taskId = req.params.id;
-    const deletedTask = await Task.findByIdAndDelete(taskId);
-
-    if (!deletedTask) {
-      res.status(404).json({ message: 'Task not found' });
-      return;
-    }
-
-    res.json({ message: 'Task deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting task:', error);
-    res.status(400).json({ message: 'Error deleting task' });
   }
 };
