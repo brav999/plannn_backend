@@ -30,4 +30,26 @@ router.post("/", async (req, res) => {
     }
   });
 
+router.delete("/:id", async (req, res) => {
+   try{
+    const {id}  = req.params;
+    const task = await prisma.task.delete({where: {id: id}});
+    res.status(200).json({message: 'Task deleted successfully'});
+    } catch (error) {
+   console.error("Error deleting task:", error);
+   res.status(500).json({ message: "Internal Server Error" });
+   }
+});
+
+router.get("/tasks/:id", async (req, res) => {
+    try{
+        const {id}  = req.params;
+        const task = await prisma.task.findUnique({where: {id: id}});
+        res.status(200).json(task);
+    } catch (error) {
+        console.error("Error finding task:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
 export default router;

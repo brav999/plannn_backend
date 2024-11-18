@@ -1,3 +1,4 @@
+// @ts-ignore
 import Task from '../models/taskModel';
 
 interface TaskData {
